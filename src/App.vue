@@ -7,8 +7,8 @@
           <input type="text" v-model="content">
           <button class="add" @click="add">追加</button>
         </div>
-        <div class="lists" v-for="(content, index) in contents" :key="index">
-          <input type="text" :value="content.content">
+        <div class="lists" v-for="(item, index) in contents.data.data.content" :key="index">
+          <input type="text" :value="item">
           <div class="button">
             <button class="update" @click="update">更新</button>
             <button class="delete" @click="destroy">削除</button>
@@ -22,9 +22,6 @@
 <script>
 import axios from "axios";
 export default {
-  async mounted() {
-    
-  },
   data() {
     return {
       content: "",
@@ -39,9 +36,9 @@ export default {
       })
       .then(response => {
         console.log(response);
-        const item = axios
-        .get("http://127.0.0.1:8000/api/todos");
-        this.contents = item.data.content;
+      axios
+      .get("http://127.0.0.1:8000/api/todos")
+      .then(response => (this.contents = response));
       })
       .catch(error => {
         alert(error);
