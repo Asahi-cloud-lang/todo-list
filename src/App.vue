@@ -4,11 +4,11 @@
       <h1>Todo List</h1>
       <div class="form">
         <div class="new">
-          <input type="text" v-model="newcontent">
+          <input type="text" v-model="content">
           <button class="add" @click="add">追加</button>
         </div>
         <div class="lists" v-for="(content, index) in contents" :key="index">
-          <input type="text" :value="content">
+          <input type="text" :value="content.content">
           <div class="button">
             <button class="update" @click="update">更新</button>
             <button class="delete" @click="destroy">削除</button>
@@ -22,9 +22,12 @@
 <script>
 import axios from "axios";
 export default {
+  async mounted() {
+    
+  },
   data() {
     return {
-      newcontent: "",
+      content: "",
       contents: []
     };
   },
@@ -32,25 +35,23 @@ export default {
     add() {
       axios
       .post("http://127.0.0.1:8000/api/todos", {
-        newcontent: this.newcontent
+        content: this.content
       })
       .then(response => {
         console.log(response);
+        const item = axios
+        .get("http://127.0.0.1:8000/api/todos");
+        this.contents = item.data.content;
       })
       .catch(error => {
         alert(error);
       });
     },
-    async mounted() {
-      const item = await axios
-      .get("http://127.0.0.1:8000/api/todos");
-      this.contents = item.data[0].content;
-    },
     update() {
       axios
       .put("http://127.0.0.1:8000/api/todos/" + this.id)
       .then(response => {
-        this.contents = response.data[0].content;
+        this.contents = response.data.content;
       });
     },
     destroy() {
