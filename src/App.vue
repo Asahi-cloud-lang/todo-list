@@ -1,17 +1,19 @@
 <template>
   <div>
     <div class="card">
-      <h1>Todo List</h1>
+      <h1>Todo List{{contents.id}}</h1>
       <div class="form">
         <div class="new">
           <input type="text" v-model="content">
           <button class="add" @click="add">追加</button>
         </div>
         <div class="lists" v-for="(item, index) in contents" :key="index">
-          <input type="text" :value="item.content">
+          <input type="text"
+          :value="item.content"
+          >
           <div class="button">
-            <button class="update" @click="update">更新</button>
-            <button class="delete" @click="destroy">削除</button>
+            <button class="update" @click="update(item.id)">更新</button>
+            <button class="delete" @click="destroy(item.id)">削除</button>
           </div>
         </div>
       </div>
@@ -25,8 +27,19 @@ export default {
   data() {
     return {
       content: "",
-      contents: []
+      contents: [],
+      editcontent: "",
     };
+  },
+  mounted() {
+    axios
+    .get("http://127.0.0.1:8000/api/todos")
+    .then(response => (
+      this.contents = response.data.data
+      ))
+    .catch(error => {
+    alert(error);
+    });
   },
   methods: {
     add() {
@@ -44,9 +57,9 @@ export default {
         alert(error);
       });
     },
-    update() {
+    update(id) {
       axios
-      .put("http://127.0.0.1:8000/api/todos/" + this.id, {
+      .put("http://127.0.0.1:8000/api/todos/" + id, {
         content: this.content
       })
       .then(response => {
@@ -59,9 +72,9 @@ export default {
         alert(error);
       });
     },
-    destroy() {
+    destroy(id) {
       axios
-      .delete("http://127.0.0.1:8000/api/todos/" + this.id)
+      .delete("http://127.0.0.1:8000/api/todos/" + id)
       .then(response => {
         console.log(response);
       axios
