@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card">
-      <h1>Todo List{{contents.id}}</h1>
+      <h1>Todo List</h1>
       <div class="form">
         <div class="new">
           <input type="text" v-model="content">
@@ -10,6 +10,7 @@
         <div class="lists" v-for="(item, index) in contents" :key="index">
           <input type="text"
           :value="item.content"
+          v-model="editcontent"
           >
           <div class="button">
             <button class="update" @click="update(item.id)">更新</button>
@@ -28,7 +29,7 @@ export default {
     return {
       content: "",
       contents: [],
-      editcontent: "",
+      editcontent:""
     };
   },
   mounted() {
@@ -60,7 +61,7 @@ export default {
     update(id) {
       axios
       .put("http://127.0.0.1:8000/api/todos/" + id, {
-        content: this.content
+        content: this.editcontent
       })
       .then(response => {
         console.log(response);
