@@ -7,8 +7,8 @@
           <input type="text" v-model="content">
           <button class="add" @click="add">追加</button>
         </div>
-        <div class="lists" v-for="(item, index) in contents.data.data.content" :key="index">
-          <input type="text" :value="item">
+        <div class="lists" v-for="(item, index) in contents" :key="index">
+          <input type="text" :value="item.content">
           <div class="button">
             <button class="update" @click="update">更新</button>
             <button class="delete" @click="destroy">削除</button>
@@ -38,7 +38,7 @@ export default {
         console.log(response);
       axios
       .get("http://127.0.0.1:8000/api/todos")
-      .then(response => (this.contents = response));
+      .then(response => (this.contents = response.data.data));
       })
       .catch(error => {
         alert(error);
@@ -46,16 +46,30 @@ export default {
     },
     update() {
       axios
-      .put("http://127.0.0.1:8000/api/todos/" + this.id)
+      .put("http://127.0.0.1:8000/api/todos/" + this.id, {
+        content: this.content
+      })
       .then(response => {
-        this.contents = response.data.content;
+        console.log(response);
+      axios
+      .get("http://127.0.0.1:8000/api/todos")
+      .then(response => (this.contents = response.data.data));
+      })
+      .catch(error => {
+        alert(error);
       });
     },
     destroy() {
       axios
       .delete("http://127.0.0.1:8000/api/todos/" + this.id)
       .then(response => {
-        this.contents = response.data[0].content;
+        console.log(response);
+      axios
+      .get("http://127.0.0.1:8000/api/todos")
+      .then(response => (this.contents = response.data.data));
+      })
+      .catch(error => {
+        alert(error);
       });
     }
   }
@@ -164,7 +178,6 @@ html {
   background-color: #2d197c;
 }
 * {
-  color: white;
   font-family: "Noto Sans JP";
 }
 
