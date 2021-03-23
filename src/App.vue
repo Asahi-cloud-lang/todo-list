@@ -55,6 +55,7 @@ export default {
       .catch(error => {
         alert(error);
       });
+      this.content = ""
     },
     update(id,content) {
       axios
