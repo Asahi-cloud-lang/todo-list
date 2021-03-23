@@ -9,11 +9,10 @@
         </div>
         <div class="lists" v-for="(item, index) in contents" :key="index">
           <input type="text"
-          :value="item.content"
-          v-model="editcontent"
+          v-model="item.content"
           >
           <div class="button">
-            <button class="update" @click="update(item.id)">更新</button>
+            <button class="update" @click="update(item.id, item.content)">更新</button>
             <button class="delete" @click="destroy(item.id)">削除</button>
           </div>
         </div>
@@ -29,7 +28,6 @@ export default {
     return {
       content: "",
       contents: [],
-      editcontent:""
     };
   },
   mounted() {
@@ -58,10 +56,10 @@ export default {
         alert(error);
       });
     },
-    update(id) {
+    update(id,content) {
       axios
       .put("http://127.0.0.1:8000/api/todos/" + id, {
-        content: this.editcontent
+        content: content
       })
       .then(response => {
         console.log(response);
