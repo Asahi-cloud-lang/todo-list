@@ -32,7 +32,7 @@ export default {
   },
   mounted() {
     axios
-    .get("http://127.0.0.1:8000/api/todos")
+    .get("https://powerful-shelf-68431.herokuapp.com/api/todos")
     .then(response => (
       this.contents = response.data.data
       ))
@@ -43,13 +43,13 @@ export default {
   methods: {
     add() {
       axios
-      .post("http://127.0.0.1:8000/api/todos", {
+      .post("https://powerful-shelf-68431.herokuapp.com/api/todos", {
         content: this.content
       })
       .then(response => {
         console.log(response);
       axios
-      .get("http://127.0.0.1:8000/api/todos")
+      .get("https://powerful-shelf-68431.herokuapp.com/api/todos")
       .then(response => (this.contents = response.data.data));
       })
       .catch(error => {
@@ -59,13 +59,13 @@ export default {
     },
     update(id,content) {
       axios
-      .put("http://127.0.0.1:8000/api/todos/" + id, {
+      .put("https://powerful-shelf-68431.herokuapp.com/api/todos/" + id, {
         content: content
       })
       .then(response => {
         console.log(response);
       axios
-      .get("http://127.0.0.1:8000/api/todos")
+      .get("https://powerful-shelf-68431.herokuapp.com/api/todos")
       .then(response => (this.contents = response.data.data));
       })
       .catch(error => {
@@ -74,11 +74,11 @@ export default {
     },
     destroy(id) {
       axios
-      .delete("http://127.0.0.1:8000/api/todos/" + id)
+      .delete("https://powerful-shelf-68431.herokuapp.com/api/todos/" + id)
       .then(response => {
         console.log(response);
       axios
-      .get("http://127.0.0.1:8000/api/todos")
+      .get("https://powerful-shelf-68431.herokuapp.com/api/todos")
       .then(response => (this.contents = response.data.data));
       })
       .catch(error => {
